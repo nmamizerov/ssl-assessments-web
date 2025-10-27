@@ -88,7 +88,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
   if (!mainData) return <div>Загрузка...</div>;
 
   return (
-    <div className="assessment-container mx-auto px-4">
+    <div className="assessment-container mx-auto px-4 pb-32">
       <div className="flex justify-center mt-3">
         <div className="w-full">
           <h4 className="tst-title mb-0">
@@ -102,13 +102,10 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
         {categoryComment.map((cat: any) => (
           <div
             key={cat.id}
-            className="flex flex-wrap items-center pb-2 mb-2 test-result"
+            className="flex flex-wrap items-center pb-2 mb-2 gap-4 flex-col md:flex-row test-result"
           >
-            <div className="md:w-1/2 lg:w-1/3 flex items-center mb-2 md:mb-0">
-              <div
-                className="flex items-center"
-                style={{ width: "550px", maxWidth: "75%" }}
-              >
+            <div className="flex flex-1 items-center mb-2 md:mb-0">
+              <div className="flex items-center flex-1 mr-5">
                 <img
                   src={`https://api.university.skillslab.center${cat.icon}`}
                   alt=""
@@ -149,7 +146,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                 <div className="ml-1 font-bold">{cat.value}%</div>
               </div>
             </div>
-            <div className="md:w-1/2 lg:w-2/3">{cat.comment}</div>
+            <div className="flex-1">{cat.comment}</div>
           </div>
         ))}
       </div>
@@ -217,7 +214,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
       {/* )} */}
 
       {/* Главная навигация */}
-      <nav className="flex gap-2 my-10">
+      <nav className="flex md:flex-row flex-col gap-2 my-10">
         <button
           onClick={() => setCategory("places")}
           className={`nav-button ${category === "places" ? "active" : ""}`}
@@ -436,9 +433,11 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                   <div className="mt-2">
                     {/* Заголовки таблицы */}
                     <div className="grid grid-cols-3 bg-gray-100">
-                      <div className="p-3  text-sm">Навык</div>
-                      <div className="p-3 font-bold text-sm">Ваш результат</div>
-                      <div className="p-3 font-bold text-sm ">
+                      <div className="p-3  text-xs md:text-sm">Навык</div>
+                      <div className="p-3 font-bold text-xs md:text-sm">
+                        Ваш результат
+                      </div>
+                      <div className="p-3 font-bold text-xs md:text-sm ">
                         Необходимый уровень
                       </div>
                     </div>
@@ -450,13 +449,13 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                           key={idx}
                           className={`grid grid-cols-3 bg-opacity-50 bg-${miss.color}-500`}
                         >
-                          <div className="p-3 text-sm border-b border-black/20">
+                          <div className="p-3 text-xs md:text-sm border-b border-black/20">
                             {miss.title}
                           </div>
-                          <div className="p-3 text-sm font-bold border-b border-l border-black/20">
+                          <div className="p-3 text-xs md:text-sm font-bold border-b border-l border-black/20">
                             {miss.value}%
                           </div>
-                          <div className="p-3 text-sm border-b border-x border-black/20">
+                          <div className="p-3 text-xs md:text-sm border-b border-x border-black/20">
                             от {miss.ideal_value}%
                           </div>
                         </div>
@@ -499,12 +498,13 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
               </button>
             ))}
           </nav>
-
-          {(categoryRecFiltered.skills_filtered || []).map((skill: any) => (
-            <div key={skill.id} className="mt-3">
-              <Rec skill={skill} />
-            </div>
-          ))}
+          <div className="mt-3">
+            <Rec
+              books={categoryRecFiltered.books}
+              excercises={categoryRecFiltered.excercises}
+              more={categoryRecFiltered.more}
+            />
+          </div>
         </div>
       )}
     </div>
