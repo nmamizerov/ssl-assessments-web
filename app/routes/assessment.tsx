@@ -204,7 +204,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
             </span>
             до конца промокода{" "}
             <span className="font-bold text-orange-700 px-2 py-1 rounded">
-              TESTING
+              {mainData.meta?.code}
             </span>{" "}
             на скидку <span className="font-bold text-red-600">15%</span> на
             курс
