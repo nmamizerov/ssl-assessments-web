@@ -45,7 +45,11 @@ export default function Rec({ books, excercises, more }: RecProps) {
           })}
       </nav>
       <div className="mt-2">
-        <div dangerouslySetInnerHTML={{ __html: tabs[recNavDetail].content }} />
+        <div
+          dangerouslySetInnerHTML={{
+            __html: tabs.find((tab) => tab.id === recNavDetail)?.content || "",
+          }}
+        />
       </div>
     </>
   );
