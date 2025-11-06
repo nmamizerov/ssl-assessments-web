@@ -64,9 +64,11 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
   // Расчет оставшихся часов до конца промокода (72 часа от created_at)
   useEffect(() => {
     const calculateHoursLeft = () => {
-      if (!mainData?.["meta.created_at"]) return;
+      if (!mainData?.result?.data?.["meta.created_at"]) return;
 
-      const createdAt = new Date(mainData["meta.created_at"]).getTime();
+      const createdAt = new Date(
+        mainData?.result?.data?.["meta.created_at"]
+      ).getTime();
       const promoEndTime = createdAt + 72 * 60 * 60 * 1000; // 72 часа в миллисекундах
       const now = new Date().getTime();
       const timeLeft = promoEndTime - now;
@@ -87,6 +89,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
 
   const categoryFiltered = categoryComment[categoryNav] || {};
   const categoryRecFiltered = categoryComment[recNav] || {};
+  console.log(mainData);
 
   if (!mainData) return <div>Загрузка...</div>;
 
@@ -179,7 +182,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
             </a>{" "}
             Старт потока —{" "}
             <span className="font-semibold">
-              {mainData.meta?.ok_start_date}
+              {mainData?.result?.data?.["meta.ok_start_date"]}
             </span>
           </p>
         </div>
@@ -207,7 +210,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
             </span>
             до конца промокода{" "}
             <span className="font-bold text-orange-700 px-2 py-1 rounded">
-              {mainData["meta.code"]}
+              {mainData?.result?.data?.["meta.code"]}
             </span>{" "}
             на скидку <span className="font-bold text-red-600">15%</span> на
             курс
