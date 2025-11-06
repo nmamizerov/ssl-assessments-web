@@ -69,13 +69,17 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
       const createdAt = new Date(
         mainData?.result?.data?.["meta.created_at"]
       ).getTime();
-      const promoEndTime = createdAt + 72 * 60 * 60 * 1000; // 72 часа в миллисекундах
       const now = new Date().getTime();
+
+      // Если created_at в будущем, используем текущее время
+      const startTime = createdAt > now ? now : createdAt;
+      const promoEndTime = startTime + 72 * 60 * 60 * 1000; // 72 часа в миллисекундах
       const timeLeft = promoEndTime - now;
 
       if (timeLeft > 0) {
         const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-        setHoursLeft(hours);
+        // Ограничиваем максимум до 72 часов
+        setHoursLeft(Math.min(hours, 72));
       } else {
         setHoursLeft(0);
       }
@@ -89,7 +93,6 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
 
   const categoryFiltered = categoryComment[categoryNav] || {};
   const categoryRecFiltered = categoryComment[recNav] || {};
-  console.log(mainData);
 
   if (!mainData) return <div>Загрузка...</div>;
 
