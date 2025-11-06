@@ -36,10 +36,13 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
       const skillArray: any[] = [];
       row.skills.forEach((skill: any) => {
         const rowS = { ...skill };
-        rowS.data = mainData.result.data.skills[rowS.skill.slug];
+        const data = mainData.result.data.skills[rowS.skill.slug];
+        rowS.data = data;
         skillArray.push(rowS);
       });
-      skillArray.sort((a, b) => (a.data.value > b.data.value ? 1 : -1));
+      skillArray.sort((a, b) => {
+        return a?.data?.value > b?.data?.value ? 1 : -1;
+      });
       row.skills_filtered = skillArray;
       newArray.push(row);
     });
@@ -60,6 +63,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
 
   // Расчет оставшихся часов до конца промокода (72 часа от created_at)
   useEffect(() => {
+    console.log("mainData", mainData);
     const calculateHoursLeft = () => {
       if (!mainData?.meta?.created_at) return;
 
