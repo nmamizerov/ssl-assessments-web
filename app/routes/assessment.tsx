@@ -294,7 +294,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                               bottom: -15,
                             },
                           },
-                          colors: [skill.data.color],
+                          colors: [skill?.data?.color],
                           plotOptions: {
                             radialBar: {
                               hollow: { size: "42%" },
@@ -313,28 +313,30 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                           },
                           stroke: { lineCap: "round" },
                         }}
-                        series={[parseInt(skill.data.value)]}
+                        series={[parseInt(skill?.data?.value)]}
                       />
                     </div>
                     <img
-                      src={`https://api.university.skillslab.center${skill.img}`}
+                      src={`https://api.university.skillslab.center${skill?.img}`}
                       className="mt-2 w-full"
                       alt=""
                     />
                     <div
                       className="mt-2 small-text"
-                      dangerouslySetInnerHTML={{ __html: skill.description }}
+                      dangerouslySetInnerHTML={{ __html: skill?.description }}
                     />
                     <div className="mt-2 w-full">
                       <strong>Ваш результат</strong>
-                      {skill.data.notes.map((alert: any, idx: number) => (
-                        <div
-                          key={idx}
-                          className={`alert alert-${alert.color} mt-2 flex items-center`}
-                        >
-                          {alert.text}
-                        </div>
-                      ))}
+                      {(skill?.data?.notes || []).map(
+                        (alert: any, idx: number) => (
+                          <div
+                            key={idx}
+                            className={`alert alert-${alert.color} mt-2 flex items-center`}
+                          >
+                            {alert.text}
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 ))}
