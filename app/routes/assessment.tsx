@@ -6,7 +6,7 @@ import "./assessment.css";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const response = await fetch(
-    `https://api.university.skillslab.center/api/tests/main_data/?slug=${params.slug}`
+    `https://api.university.skillslab.center/api/tests/main_data/?slug=${params.slug}`,
   );
   const data = await response.json();
 
@@ -15,7 +15,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
   const [category, setCategory] = useState<"skills" | "places" | "recs">(
-    "places"
+    "places",
   );
   const [categoryNav, setCategoryNav] = useState(0);
   const [recNav, setRecNav] = useState(0);
@@ -67,7 +67,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
       if (!mainData?.result?.data?.["meta.created_at"]) return;
 
       const createdAt = new Date(
-        mainData?.result?.data?.["meta.created_at"]
+        mainData?.result?.data?.["meta.created_at"],
       ).getTime();
       const now = new Date().getTime();
 
@@ -161,35 +161,37 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* Информационная плашка */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-teal-500 rounded-lg p-4 my-6 shadow-sm">
-        <div className="flex items-center">
-          <svg
-            className="w-5 h-5 text-teal-500 mr-3 flex-shrink-0"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <p className="text-gray-800 font-medium">
-            Повышайте навыки на курсе{" "}
-            <a
-              href="https://courses.skillslab.center/communication"
-              target="_blank"
-              className="font-bold text-teal-700"
+      {mainData?.result?.data?.["meta.ok_start_date"] && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-teal-500 rounded-lg p-4 my-6 shadow-sm">
+          <div className="flex items-center">
+            <svg
+              className="w-5 h-5 text-teal-500 mr-3 flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
             >
-              Осознанные коммуникации
-            </a>{" "}
-            Старт потока —{" "}
-            <span className="font-semibold">
-              {mainData?.result?.data?.["meta.ok_start_date"]}
-            </span>
-          </p>
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p className="text-gray-800 font-medium">
+              Повышайте навыки на курсе{" "}
+              <a
+                href="https://courses.skillslab.center/communication"
+                target="_blank"
+                className="font-bold text-teal-700"
+              >
+                Осознанные коммуникации
+              </a>{" "}
+              Старт потока —{" "}
+              <span className="font-semibold">
+                {mainData?.result?.data?.["meta.ok_start_date"]}
+              </span>
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Плашка с промокодом */}
       {/* {hoursLeft > 0 && ( */}
@@ -206,18 +208,20 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
               clipRule="evenodd"
             />
           </svg>
-          <p className="text-gray-800 font-medium">
-            <span className="inline-flex items-center  text-orange-800 font-bold px-2 py-1 rounded mr-2">
-              🔥 Осталось {hoursLeft}{" "}
-              {hoursLeft === 1 ? "час" : hoursLeft < 5 ? "часа" : "часов"}
-            </span>
-            до конца промокода{" "}
-            <span className="font-bold text-orange-700 px-2 py-1 rounded">
-              {mainData?.result?.data?.["meta.code"]}
-            </span>{" "}
-            на скидку <span className="font-bold text-red-600">15%</span> на
-            курс
-          </p>
+          {mainData?.result?.data?.["meta.code"]?.trim() && (
+            <p className="text-gray-800 font-medium">
+              <span className="inline-flex items-center  text-orange-800 font-bold px-2 py-1 rounded mr-2">
+                🔥 Осталось {hoursLeft}{" "}
+                {hoursLeft === 1 ? "час" : hoursLeft < 5 ? "часа" : "часов"}
+              </span>
+              до конца промокода{" "}
+              <span className="font-bold text-orange-700 px-2 py-1 rounded">
+                {mainData?.result?.data?.["meta.code"]}
+              </span>{" "}
+              на скидку <span className="font-bold text-red-600">15%</span> на
+              курс
+            </p>
+          )}
         </div>
       </div>
       {/* )} */}
@@ -335,7 +339,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                           >
                             {alert.text}
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -470,7 +474,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                             от {miss.ideal_value}%
                           </div>
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                   <div className="grid grid-cols-1 gap-2 mt-3">
@@ -482,7 +486,7 @@ export default function AssessmentPage({ loaderData }: Route.ComponentProps) {
                         >
                           {warn.text}
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                 </div>
